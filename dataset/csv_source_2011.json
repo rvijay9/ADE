@@ -1,0 +1,28 @@
+{
+	"name": "csv_source_2011",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Ls_dev_bs",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Venkat_DS"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "california_health_2011.xlsx",
+				"folderPath": "raw",
+				"container": "venkat-de"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

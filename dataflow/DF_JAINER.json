@@ -1,0 +1,129 @@
+{
+	"name": "DF_JAINER",
+	"properties": {
+		"folder": {
+			"name": "DF_Neelima"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_srcdata_dept",
+						"type": "DatasetReference"
+					},
+					"name": "srcdept"
+				},
+				{
+					"dataset": {
+						"referenceName": "DS_srcdata_emp",
+						"type": "DatasetReference"
+					},
+					"name": "srcemp"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_tgtdata_dim",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "join1"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "select1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          deptno as integer,",
+				"          dname as string,",
+				"          dloc as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> srcdept",
+				"source(output(",
+				"          empno as integer,",
+				"          ename as string,",
+				"          ejob as string,",
+				"          esalary as double,",
+				"          deptno as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> srcemp",
+				"srcdept, srcemp join(srcdept@deptno == srcemp@deptno,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 derive(create_date = currentTimestamp(),",
+				"          loaddate = currentTimestamp(),",
+				"          userid = 'Neelima') ~> derivedColumn1",
+				"select1 keyGenerate(output(ekey1 as long),",
+				"     startAt: 100L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"derivedColumn1 select(mapColumn(",
+				"          deptno = srcdept@deptno,",
+				"          dname,",
+				"          dloc,",
+				"          empno,",
+				"          ename,",
+				"          ejob,",
+				"          esalary,",
+				"          create_date,",
+				"          loaddate,",
+				"          userid",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"surrogateKey1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ekey as integer,",
+				"          empno as integer,",
+				"          ename as string,",
+				"          job as string,",
+				"          esalary as double,",
+				"          deptno as integer,",
+				"          created_date as timestamp,",
+				"          load_date as timestamp,",
+				"          userid as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ekey = ekey1,",
+				"          empno,",
+				"          ename,",
+				"          job = ejob,",
+				"          esalary,",
+				"          deptno,",
+				"          created_date = create_date,",
+				"          load_date = loaddate,",
+				"          userid",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

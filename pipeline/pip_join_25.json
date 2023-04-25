@@ -1,0 +1,37 @@
+{
+	"name": "pip_join_25",
+	"properties": {
+		"activities": [
+			{
+				"name": "df_24",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "df_24",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "Venkat_PL"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-04-24T09:48:05Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

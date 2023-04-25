@@ -1,0 +1,88 @@
+{
+	"name": "DF_DB_Employee",
+	"properties": {
+		"folder": {
+			"name": "Vijay"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_Src_DB_Employee",
+						"type": "DatasetReference"
+					},
+					"name": "SrcDbEmployee"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_Tgt_DB_DimEmployee",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "surrogateKey1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          empno as integer,",
+				"          ename as string,",
+				"          ejob as string,",
+				"          esalary as double,",
+				"          deptno as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> SrcDbEmployee",
+				"SrcDbEmployee derive(Get_Load_Date = currentTimestamp(),",
+				"          Get_Created_Date = currentTimestamp(),",
+				"          GetUser = 'SQLSERVER') ~> derivedColumn1",
+				"derivedColumn1 keyGenerate(output(ekey as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ekey as integer,",
+				"          empno as integer,",
+				"          ename as string,",
+				"          job as string,",
+				"          esalary as double,",
+				"          deptno as integer,",
+				"          created_date as timestamp,",
+				"          load_date as timestamp,",
+				"          userid as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ekey,",
+				"          empno,",
+				"          ename,",
+				"          job = ejob,",
+				"          esalary,",
+				"          deptno,",
+				"          created_date = Get_Created_Date,",
+				"          load_date = Get_Load_Date,",
+				"          userid = GetUser",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

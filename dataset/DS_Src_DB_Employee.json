@@ -1,0 +1,44 @@
+{
+	"name": "DS_Src_DB_Employee",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_db_adv",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Vijay"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "empno",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "ename",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ejob",
+				"type": "nvarchar"
+			},
+			{
+				"name": "esalary",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "deptno",
+				"type": "tinyint",
+				"precision": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "srcdata",
+			"table": "emp"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

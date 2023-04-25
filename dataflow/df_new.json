@@ -1,0 +1,97 @@
+{
+	"name": "df_new",
+	"properties": {
+		"folder": {
+			"name": "df_venkat"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "pp_src_org_csv",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_tgt_organizations_18",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "select1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Index as string,",
+				"          Name as string,",
+				"          Website as string,",
+				"          Country as string,",
+				"          Description as string,",
+				"          Founded as string,",
+				"          Industry as string,",
+				"          Total_Employees as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 derive(chng_founded = toInteger(Founded),",
+				"          Chag_TotalEmployees = toInteger(Total_Employees)) ~> derivedColumn1",
+				"derivedColumn1 select(mapColumn(",
+				"          Index,",
+				"          Name,",
+				"          Website,",
+				"          Country,",
+				"          Description,",
+				"          Industry,",
+				"          chng_founded,",
+				"          Chag_TotalEmployees",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          index_no as integer,",
+				"          orgname as string,",
+				"          website as string,",
+				"          country as string,",
+				"          orgdesc as string,",
+				"          founded as integer,",
+				"          industry as string,",
+				"          total_employees as long",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          index_no = Index,",
+				"          orgname = Name,",
+				"          website = Website,",
+				"          country = Country,",
+				"          orgdesc = Description,",
+				"          founded = chng_founded,",
+				"          industry = Industry,",
+				"          total_employees = Chag_TotalEmployees",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

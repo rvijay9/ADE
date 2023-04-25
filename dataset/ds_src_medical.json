@@ -1,0 +1,57 @@
+{
+	"name": "ds_src_medical",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Ls_dev_bs",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Venkat_DS"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Medical_Cost.csv",
+				"folderPath": "raw",
+				"container": "venkat-de"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "age",
+				"type": "String"
+			},
+			{
+				"name": "sex",
+				"type": "String"
+			},
+			{
+				"name": "bmi",
+				"type": "String"
+			},
+			{
+				"name": "children",
+				"type": "String"
+			},
+			{
+				"name": "smoker",
+				"type": "String"
+			},
+			{
+				"name": "region",
+				"type": "String"
+			},
+			{
+				"name": "charges",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

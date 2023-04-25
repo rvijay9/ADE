@@ -1,0 +1,57 @@
+{
+	"name": "DS_tgt_online_retail",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_db_adv",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Neelima_DS"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "invoiceno",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "stockcode",
+				"type": "nvarchar"
+			},
+			{
+				"name": "descriptions",
+				"type": "nvarchar"
+			},
+			{
+				"name": "quantity",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "invoicedate",
+				"type": "nvarchar"
+			},
+			{
+				"name": "unitprice",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "customerid",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "country",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "banking",
+			"table": "onlinesales"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

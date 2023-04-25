@@ -1,0 +1,20 @@
+{
+	"name": "DS_DB_Tgt_Org",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_db_adv",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Neelima_DS"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "banking",
+			"table": "org"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

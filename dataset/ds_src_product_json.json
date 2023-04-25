@@ -1,0 +1,98 @@
+{
+	"name": "ds_src_product_json",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Ls_dev_bs",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Venkat_DS"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "products.json",
+				"folderPath": "raw",
+				"container": "venkat-de"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "integer"
+				},
+				"name": {
+					"type": "string"
+				},
+				"vendor_id": {
+					"type": "integer"
+				},
+				"requires_shipping": {
+					"type": "boolean"
+				},
+				"sku": {
+					"type": "string"
+				},
+				"taxable": {
+					"type": "boolean"
+				},
+				"status": {
+					"type": "string"
+				},
+				"price": {
+					"type": "integer"
+				},
+				"vendor": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "integer"
+						},
+						"name": {
+							"type": "string"
+						}
+					}
+				},
+				"details": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"track_id": {
+								"type": "integer"
+							},
+							"name": {
+								"type": "string"
+							},
+							"album_id": {
+								"type": "integer"
+							},
+							"media_type_id": {
+								"type": "integer"
+							},
+							"genre_id": {
+								"type": "integer"
+							},
+							"composer": {
+								"type": "string"
+							},
+							"milliseconds": {
+								"type": "integer"
+							},
+							"bytes": {
+								"type": "integer"
+							},
+							"unit_price": {
+								"type": "number"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

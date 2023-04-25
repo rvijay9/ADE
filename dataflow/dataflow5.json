@@ -1,0 +1,54 @@
+{
+	"name": "dataflow5",
+	"properties": {
+		"folder": {
+			"name": "df_venkat"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_src_medical",
+						"type": "DatasetReference"
+					},
+					"name": "medical"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_tgt_medical",
+						"type": "DatasetReference"
+					},
+					"name": "output"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          age as string,",
+				"          sex as string,",
+				"          bmi as string,",
+				"          children as string,",
+				"          smoker as string,",
+				"          region as string,",
+				"          charges as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> medical",
+				"medical sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> output"
+			]
+		}
+	}
+}

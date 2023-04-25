@@ -1,0 +1,56 @@
+{
+	"name": "ds_tgt_organizations_18",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_db_adv",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Venkat_DS"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "index_no",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "orgname",
+				"type": "nvarchar"
+			},
+			{
+				"name": "website",
+				"type": "nvarchar"
+			},
+			{
+				"name": "country",
+				"type": "nvarchar"
+			},
+			{
+				"name": "orgdesc",
+				"type": "nvarchar"
+			},
+			{
+				"name": "founded",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "industry",
+				"type": "nvarchar"
+			},
+			{
+				"name": "total_employees",
+				"type": "bigint",
+				"precision": 19
+			}
+		],
+		"typeProperties": {
+			"schema": "banking",
+			"table": "organization"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

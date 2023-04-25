@@ -1,0 +1,100 @@
+{
+	"name": "DF_OnlineSales_DB_Exp",
+	"properties": {
+		"folder": {
+			"name": "Vijay"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_OnlineSales_Src",
+						"type": "DatasetReference"
+					},
+					"name": "SrcOnlinesales"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_Tgt_DB_Onlinesales",
+						"type": "DatasetReference"
+					},
+					"name": "TgtOnlineSales"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DrvOnlineSales"
+				},
+				{
+					"name": "SelectColumns"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          InvoiceNo as string,",
+				"          StockCode as string,",
+				"          Description as string,",
+				"          Quantity as string,",
+				"          InvoiceDate as string,",
+				"          UnitPrice as string,",
+				"          CustomerID as string,",
+				"          Country as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> SrcOnlinesales",
+				"SrcOnlinesales derive(Chng_InvoiceNo = toInteger(InvoiceNo),",
+				"          Chng_Quantity = toInteger(Quantity),",
+				"          Chng_UnitPrice = toFloat(UnitPrice),",
+				"          Chng_CustomerId = toInteger(CustomerID)) ~> DrvOnlineSales",
+				"DrvOnlineSales select(mapColumn(",
+				"          StockCode,",
+				"          Description,",
+				"          Country,",
+				"          Chng_InvoiceNo,",
+				"          Chng_Quantity,",
+				"          Chng_UnitPrice,",
+				"          Chng_CustomerId,",
+				"          InvoiceDate",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectColumns",
+				"SelectColumns sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          invoiceno as long,",
+				"          stockcode as string,",
+				"          descriptions as string,",
+				"          quantity as long,",
+				"          invoicedate as string,",
+				"          unitprice as integer,",
+				"          customerid as long,",
+				"          country as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     dateFormat:'MM-dd-yyyy',",
+				"     timestampFormat:'MM/dd/yyyy HH:mm:ss',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          invoiceno = Chng_InvoiceNo,",
+				"          stockcode = StockCode,",
+				"          descriptions = Description,",
+				"          quantity = Chng_Quantity,",
+				"          invoicedate = InvoiceDate,",
+				"          unitprice = Chng_UnitPrice,",
+				"          customerid = Chng_CustomerId,",
+				"          country = Country",
+				"     )) ~> TgtOnlineSales"
+			]
+		}
+	}
+}

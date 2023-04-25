@@ -1,0 +1,37 @@
+{
+	"name": "PL_Org_Drv_Select",
+	"properties": {
+		"activities": [
+			{
+				"name": "DF_Org_Drv_Selct",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_Org_Drv_Selct",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "VIjay"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-04-20T03:03:16Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,127 @@
+{
+	"name": "df_24",
+	"properties": {
+		"folder": {
+			"name": "df_venkat"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_src_db_customers_24",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_src_db_department24",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_tht_ds_employees25",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "join1"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "select1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          cust_id as integer,",
+				"          cust_name as string,",
+				"          cust_address as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source(output(",
+				"          dep_no as integer,",
+				"          dep_name as string,",
+				"          dep_id as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source2",
+				"source1, source2 join(cust_id == dep_id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 derive(created_date = currentTimestamp(),",
+				"          load_date = currentTimestamp(),",
+				"          user_name = 'balaji') ~> derivedColumn1",
+				"derivedColumn1 keyGenerate(output(ekey as long),",
+				"     startAt: 1001L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 select(mapColumn(",
+				"          cust_id,",
+				"          cust_name,",
+				"          cust_address,",
+				"          dep_no,",
+				"          dep_name,",
+				"          dep_id,",
+				"          created_date,",
+				"          load_date,",
+				"          user_name,",
+				"          ekey",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ekey as string,",
+				"          cust_id as integer,",
+				"          cust_name as string,",
+				"          dep_no as integer,",
+				"          dep_name as string,",
+				"          dep_id as integer,",
+				"          created_date as date,",
+				"          load_date as date,",
+				"          user_name as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ekey,",
+				"          cust_id,",
+				"          cust_name,",
+				"          dep_no,",
+				"          dep_name,",
+				"          dep_id,",
+				"          created_date,",
+				"          load_date,",
+				"          user_name",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

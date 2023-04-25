@@ -1,0 +1,86 @@
+{
+	"name": "DF_bank_org",
+	"properties": {
+		"folder": {
+			"name": "DF_Neelima"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_src_bank_org",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Ds_tgt_bank_org",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "drvchngfoundedtalemployes"
+				},
+				{
+					"name": "select1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Index as string,",
+				"          Name as string,",
+				"          Website as string,",
+				"          Country as string,",
+				"          Description as string,",
+				"          Founded as string,",
+				"          Industry as string,",
+				"          Total_Employees as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 derive(Chng_Founded = toInteger(Founded),",
+				"          Chng_TotalEmployees = toInteger(Total_Employees)) ~> drvchngfoundedtalemployes",
+				"drvchngfoundedtalemployes select(mapColumn(",
+				"          Index,",
+				"          Name,",
+				"          Website,",
+				"          Country,",
+				"          Description,",
+				"          Industry,",
+				"          Chng_Founded,",
+				"          Chng_TotalEmployees",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          Index,",
+				"          Name,",
+				"          Website,",
+				"          Country,",
+				"          Description,",
+				"          Industry,",
+				"          Chng_Founded,",
+				"          Chng_TotalEmployees",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

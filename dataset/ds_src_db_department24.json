@@ -1,0 +1,35 @@
+{
+	"name": "ds_src_db_department24",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_db_adv",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Venkat_DS"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "dep_no",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "dep_name",
+				"type": "varchar"
+			},
+			{
+				"name": "dep_id",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "ramana",
+			"table": "department"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

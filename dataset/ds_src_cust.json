@@ -1,0 +1,49 @@
+{
+	"name": "ds_src_cust",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Ls_dev_bs",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Venkat_DS"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "customers.json",
+				"folderPath": "raw",
+				"container": "venkat-de"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "integer"
+				},
+				"email": {
+					"type": "string"
+				},
+				"first": {
+					"type": "string"
+				},
+				"last": {
+					"type": "string"
+				},
+				"company": {
+					"type": "string"
+				},
+				"created_at": {
+					"type": "string"
+				},
+				"country": {
+					"type": "string"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

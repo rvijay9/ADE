@@ -1,0 +1,55 @@
+{
+	"name": "DF_DB_Org",
+	"properties": {
+		"folder": {
+			"name": "DF_Neelima"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_Org_src",
+						"type": "DatasetReference"
+					},
+					"name": "SrcOrgCsv"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_DB_Tgt_Org",
+						"type": "DatasetReference"
+					},
+					"name": "TgtOrgDBTbl"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          Index as string,",
+				"          Name as string,",
+				"          Website as string,",
+				"          Country as string,",
+				"          Description as string,",
+				"          Founded as string,",
+				"          Industry as string,",
+				"          Total_Employees as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> SrcOrgCsv",
+				"SrcOrgCsv sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> TgtOrgDBTbl"
+			]
+		}
+	}
+}

@@ -1,0 +1,65 @@
+{
+	"name": "DS_tgtdata_dim",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_db_adv",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Neelima_DS"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ekey",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "empno",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "ename",
+				"type": "nvarchar"
+			},
+			{
+				"name": "job",
+				"type": "nvarchar"
+			},
+			{
+				"name": "esalary",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "deptno",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "created_date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "load_date",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "userid",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "tgtdata",
+			"table": "dimemployee"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

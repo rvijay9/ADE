@@ -1,0 +1,61 @@
+{
+	"name": "pp1_src_org_csv1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Ls_dev_bs",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Venkat_DS"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "organizations.csv",
+				"folderPath": "raw",
+				"container": "venkat-de"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Index",
+				"type": "String"
+			},
+			{
+				"name": "Name",
+				"type": "String"
+			},
+			{
+				"name": "Website",
+				"type": "String"
+			},
+			{
+				"name": "Country",
+				"type": "String"
+			},
+			{
+				"name": "Description",
+				"type": "String"
+			},
+			{
+				"name": "Founded",
+				"type": "String"
+			},
+			{
+				"name": "Industry",
+				"type": "String"
+			},
+			{
+				"name": "Total_Employees",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

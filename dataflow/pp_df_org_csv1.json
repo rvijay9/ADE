@@ -1,0 +1,107 @@
+{
+	"name": "pp_df_org_csv1",
+	"properties": {
+		"folder": {
+			"name": "df_venkat"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "pp1_src_org_csv1",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "pp_tgt_org_csv1",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"rejectedDataLinkedService": {
+						"referenceName": "Ls_dev_bs",
+						"type": "LinkedServiceReference"
+					}
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          Index as string,",
+				"          Name as string,",
+				"          Website as string,",
+				"          Country as string,",
+				"          Description as string,",
+				"          Founded as string,",
+				"          Industry as string,",
+				"          Total_Employees as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          {(Risk-Adjusted Mortality Rate)\"} as string,",
+				"          {ESOPHAGEAL RESECTION} as string,",
+				"          Prop_2 as string,",
+				"          Prop_3 as string,",
+				"          Prop_4 as string,",
+				"          Prop_5 as string,",
+				"          Prop_6 as string,",
+				"          Prop_7 as string,",
+				"          Prop_8 as string,",
+				"          Prop_9 as string,",
+				"          Prop_10 as string,",
+				"          Prop_11 as string,",
+				"          Prop_12 as string,",
+				"          Prop_13 as string,",
+				"          Prop_14 as string,",
+				"          Prop_15 as string,",
+				"          Prop_16 as string,",
+				"          Prop_17 as string,",
+				"          Prop_18 as string,",
+				"          Prop_19 as string,",
+				"          Prop_20 as string,",
+				"          Prop_21 as string,",
+				"          Prop_22 as string,",
+				"          Prop_23 as string,",
+				"          Prop_24 as string,",
+				"          Prop_25 as string,",
+				"          Prop_26 as string,",
+				"          Prop_27 as string,",
+				"          Prop_28 as string,",
+				"          Prop_29 as string,",
+				"          Prop_30 as string,",
+				"          Prop_31 as string,",
+				"          Prop_32 as string,",
+				"          Prop_33 as string,",
+				"          Prop_34 as string,",
+				"          Prop_35 as string,",
+				"          Prop_36 as string,",
+				"          Prop_37 as string,",
+				"          Prop_38 as string,",
+				"          Prop_39 as string,",
+				"          Prop_40 as string,",
+				"          Prop_41 as string,",
+				"          Prop_42 as string,",
+				"          Prop_43 as string,",
+				"          Prop_44 as string,",
+				"          Prop_45 as string,",
+				"          Prop_46 as string,",
+				"          Prop_47 as string,",
+				"          Prop_48 as string,",
+				"          Prop_49 as string,",
+				"          Prop_50 as string",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}

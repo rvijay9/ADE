@@ -1,0 +1,76 @@
+{
+	"name": "DF_Org_Drv_Selct",
+	"properties": {
+		"folder": {
+			"name": "Vijay"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_Src_organization",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_DB_Tgt_Org",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "drvChngFoundedTotalEmp"
+				},
+				{
+					"name": "SltOrganization"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Index as string,",
+				"          Name as string,",
+				"          Website as string,",
+				"          Country as string,",
+				"          Description as string,",
+				"          Founded as string,",
+				"          Industry as string,",
+				"          Total_Employees as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 derive(Chg_Founded = toInteger(Founded),",
+				"          Chg_TotalEmployees = toInteger(Total_Employees)) ~> drvChngFoundedTotalEmp",
+				"drvChngFoundedTotalEmp select(mapColumn(",
+				"          Index,",
+				"          Name,",
+				"          Website,",
+				"          Country,",
+				"          Description,",
+				"          Industry,",
+				"          Chg_Founded,",
+				"          Chg_TotalEmployees",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SltOrganization",
+				"SltOrganization sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+			]
+		}
+	}
+}

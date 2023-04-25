@@ -1,0 +1,51 @@
+{
+	"name": "DF_DB_sales",
+	"properties": {
+		"folder": {
+			"name": "DF_Neelima"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_DB_src_sales",
+						"type": "DatasetReference"
+					},
+					"name": "dbsales"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_DB_tgt_sales",
+						"type": "DatasetReference"
+					},
+					"name": "dbtgtsales"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          USERID as string,",
+				"          ORDERDATE as string,",
+				"          ORDERID as string,",
+				"          AMOUNTINFO as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> dbsales",
+				"dbsales sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> dbtgtsales"
+			]
+		}
+	}
+}

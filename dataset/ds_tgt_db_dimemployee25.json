@@ -1,0 +1,56 @@
+{
+	"name": "ds_tgt_db_dimemployee25",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_db_adv",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Venkat_DS"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "cust_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "cust_name",
+				"type": "varchar"
+			},
+			{
+				"name": "dep_no",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "dep_name",
+				"type": "varchar"
+			},
+			{
+				"name": "dep_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "created_date",
+				"type": "date"
+			},
+			{
+				"name": "lod_date",
+				"type": "date"
+			},
+			{
+				"name": "user_name",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "dimemployee25"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

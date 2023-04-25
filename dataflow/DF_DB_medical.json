@@ -1,0 +1,54 @@
+{
+	"name": "DF_DB_medical",
+	"properties": {
+		"folder": {
+			"name": "DF_Neelima"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_DB_src_medical",
+						"type": "DatasetReference"
+					},
+					"name": "dfsrcmedical"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_DB_tgt_medical",
+						"type": "DatasetReference"
+					},
+					"name": "dftgtmedical"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          age as string,",
+				"          sex as string,",
+				"          bmi as string,",
+				"          children as string,",
+				"          smoker as string,",
+				"          region as string,",
+				"          charges as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> dfsrcmedical",
+				"dfsrcmedical sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> dftgtmedical"
+			]
+		}
+	}
+}

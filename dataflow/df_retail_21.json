@@ -1,0 +1,99 @@
+{
+	"name": "df_retail_21",
+	"properties": {
+		"folder": {
+			"name": "df_venkat"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_src_retail",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_tgt_retail_21",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "select1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          InvoiceNo as string,",
+				"          StockCode as string,",
+				"          Description as string,",
+				"          Quantity as string,",
+				"          InvoiceDate as string,",
+				"          UnitPrice as string,",
+				"          CustomerID as string,",
+				"          Country as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 derive(ch_invoiceno = toInteger(InvoiceNo),",
+				"          ch_unitprice = toFloat(UnitPrice),",
+				"          ch_quantity = toInteger(Quantity),",
+				"          ch_customerid = toInteger(CustomerID),",
+				"     partitionBy('hash', 1)) ~> derivedColumn1",
+				"derivedColumn1 select(mapColumn(",
+				"          StockCode,",
+				"          Description,",
+				"          InvoiceDate,",
+				"          Country,",
+				"          ch_invoiceno,",
+				"          ch_unitprice,",
+				"          ch_quantity,",
+				"          ch_customerid",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          invoiceno as long,",
+				"          stockcode as string,",
+				"          descriptions as string,",
+				"          quantity as long,",
+				"          invoicedate as string,",
+				"          unitprice as integer,",
+				"          customerid as long,",
+				"          country as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          invoiceno = ch_invoiceno,",
+				"          stockcode = StockCode,",
+				"          descriptions = Description,",
+				"          quantity = ch_quantity,",
+				"          invoicedate = InvoiceDate,",
+				"          unitprice = ch_unitprice,",
+				"          customerid = ch_customerid,",
+				"          country = Country",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

@@ -1,0 +1,94 @@
+{
+	"name": "df_copy_calfornia_health_2010",
+	"properties": {
+		"folder": {
+			"name": "df_venkat"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_src_calfornia_health_2010",
+						"type": "DatasetReference"
+					},
+					"name": "Srccalforniahealth2010"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_tgt_stagging_calfornia_health",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          COUNTY as string,",
+				"          HOSPITAL as string,",
+				"          {COMMENT LETTERS} as string,",
+				"          {ESOPHAGEAL RESECTION\\n(Risk-Adjusted Mortality Rate)} as string,",
+				"          {ESOPHAGEAL RESECTION\\n(# of Deaths)} as string,",
+				"          {ESOPHAGEAL RESECTION\\n(# of Cases)} as string,",
+				"          {ESOPHAGEAL RESECTION\\n(Outlier Ratings)} as string,",
+				"          {PANCREATIC RESECTION\\n(Risk-Adjusted Mortality Rate)} as string,",
+				"          {PANCREATIC RESECTION\\n(# of Deaths)} as string,",
+				"          {PANCREATIC RESECTION\\n(# of Cases)} as string,",
+				"          {PANCREATIC RESECTION\\n(Outlier Ratings)} as string,",
+				"          {AAA REPAIR\\n(Risk-Adjusted Mortality Rate)} as string,",
+				"          {AAA REPAIR\\n(# of Deaths)} as string,",
+				"          {AAA REPAIR\\n(# of Cases)} as string,",
+				"          {AAA REPAIR    (Outlier Ratings)} as string,",
+				"          {CRANIOTOMY\\n(Risk-Adjusted Mortality Rate)} as string,",
+				"          {CRANIOTOMY\\n(# of Deaths)} as string,",
+				"          {CRANIOTOMY\\n(# of Cases)} as string,",
+				"          {CRANIOTOMY (Outlier Ratings)} as string,",
+				"          {ACUTE MYOCARDIAL INFARCTION\\n(Risk-Adjusted Mortality Rate)} as string,",
+				"          {ACUTE MYOCARDIAL INFARCTION\\n(# of Deaths)} as string,",
+				"          {ACUTE MYOCARDIAL INFARCTION\\n(# of Cases)} as string,",
+				"          {ACUTE MYOCARDIAL INFARCTION\\n(Outlier Ratings)} as string,",
+				"          {HEART FAILURE\\n(Risk-Adjusted Mortality Rate)} as string,",
+				"          {HEART FAILURE\\n(# of Deaths)} as string,",
+				"          {HEART FAILURE\\n(# of Cases)} as string,",
+				"          {HEART FAILURE\\n(Outlier Ratings)} as string,",
+				"          {ACUTE STROKE\\n(Risk-Adjusted Mortality Rate)} as string,",
+				"          {ACUTE STROKE\\n(# of Deaths)} as string,",
+				"          {ACUTE STROKE\\n(# of Cases)} as string,",
+				"          {ACUTE STROKE (Outlier Ratings)} as string,",
+				"          {GI HEMORRHAGE (Risk-Adjusted Mortality Rate)} as string,",
+				"          {GI HEMORRHAGE\\n(# of Deaths)} as string,",
+				"          {GI HEMORRHAGE\\n(# of Cases)} as string,",
+				"          {GI HEMORRHAGE (Outlier Ratings)} as string,",
+				"          {HIP FRACTURE\\n(Risk-Adjusted Mortality Rate)} as string,",
+				"          {HIP FRACTURE\\n(# of Deaths)} as string,",
+				"          {HIP FRACTURE\\n(# of Cases)} as string,",
+				"          {HIP FRACTURE (Outlier Ratings)} as string,",
+				"          {PNEUMONIA\\n(Risk-Adjusted Mortality Rate)} as string,",
+				"          {PNEUMONIA\\n(# of Deaths)} as string,",
+				"          {PNEUMONIA\\n(# of Cases)} as string,",
+				"          {PNEUMONIA (Outlier Ratings)} as string,",
+				"          {PCI\\n(Risk-Adjusted Mortality Rate)} as string,",
+				"          {PCI\\n(# of Deaths)} as string,",
+				"          {PCI\\n(# of Cases)} as string,",
+				"          {PCI\\n(Outlier Ratings)} as string,",
+				"          {CAROTID ENDARTERECTOMY\\n(Risk-Adjusted Mortality Rate)} as string,",
+				"          {CAROTID ENDARTERECTOMY\\n(# of Deaths)} as string,",
+				"          {CAROTID ENDARTERECTOMY\\n(# of Cases)} as string,",
+				"          {CAROTID ENDARTERECTOMY\\n(Outlier Ratings)} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Srccalforniahealth2010",
+				"Srccalforniahealth2010 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['tgt_health_2010.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}

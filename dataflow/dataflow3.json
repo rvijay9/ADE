@@ -1,0 +1,66 @@
+{
+	"name": "dataflow3",
+	"properties": {
+		"folder": {
+			"name": "df_venkat"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_src_product_json",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_tgt_product_json",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"rejectedDataLinkedService": {
+						"referenceName": "Ls_dev_bs",
+						"type": "LinkedServiceReference"
+					}
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          id as integer,",
+				"          name as string,",
+				"          vendor_id as integer,",
+				"          requires_shipping as boolean,",
+				"          sku as string,",
+				"          taxable as boolean,",
+				"          status as string,",
+				"          price as integer,",
+				"          vendor as (id as integer, name as string),",
+				"          details as (track_id as integer, name as string, album_id as integer, media_type_id as integer, genre_id as integer, composer as string, milliseconds as integer, bytes as integer, unit_price as double)[]",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> source1",
+				"source1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id as integer,",
+				"          email as string,",
+				"          first as string,",
+				"          last as string,",
+				"          company as string,",
+				"          created_at as string,",
+				"          country as string",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}

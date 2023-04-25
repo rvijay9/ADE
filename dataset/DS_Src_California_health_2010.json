@@ -1,0 +1,233 @@
+{
+	"name": "DS_Src_California_health_2010",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Ls_dev_bs",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Neelima_DS"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "california_health_2010.csv",
+				"folderPath": "raw",
+				"container": "neelima-de"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "COUNTY",
+				"type": "String"
+			},
+			{
+				"name": "HOSPITAL",
+				"type": "String"
+			},
+			{
+				"name": "COMMENT LETTERS",
+				"type": "String"
+			},
+			{
+				"name": "ESOPHAGEAL RESECTION\n(Risk-Adjusted Mortality Rate)",
+				"type": "String"
+			},
+			{
+				"name": "ESOPHAGEAL RESECTION\n(# of Deaths)",
+				"type": "String"
+			},
+			{
+				"name": "ESOPHAGEAL RESECTION\n(# of Cases)",
+				"type": "String"
+			},
+			{
+				"name": "ESOPHAGEAL RESECTION\n(Outlier Ratings)",
+				"type": "String"
+			},
+			{
+				"name": "PANCREATIC RESECTION\n(Risk-Adjusted Mortality Rate)",
+				"type": "String"
+			},
+			{
+				"name": "PANCREATIC RESECTION\n(# of Deaths)",
+				"type": "String"
+			},
+			{
+				"name": "PANCREATIC RESECTION\n(# of Cases)",
+				"type": "String"
+			},
+			{
+				"name": "PANCREATIC RESECTION\n(Outlier Ratings)",
+				"type": "String"
+			},
+			{
+				"name": "AAA REPAIR\n(Risk-Adjusted Mortality Rate)",
+				"type": "String"
+			},
+			{
+				"name": "AAA REPAIR\n(# of Deaths)",
+				"type": "String"
+			},
+			{
+				"name": "AAA REPAIR\n(# of Cases)",
+				"type": "String"
+			},
+			{
+				"name": "AAA REPAIR    (Outlier Ratings)",
+				"type": "String"
+			},
+			{
+				"name": "CRANIOTOMY\n(Risk-Adjusted Mortality Rate)",
+				"type": "String"
+			},
+			{
+				"name": "CRANIOTOMY\n(# of Deaths)",
+				"type": "String"
+			},
+			{
+				"name": "CRANIOTOMY\n(# of Cases)",
+				"type": "String"
+			},
+			{
+				"name": "CRANIOTOMY (Outlier Ratings)",
+				"type": "String"
+			},
+			{
+				"name": "ACUTE MYOCARDIAL INFARCTION\n(Risk-Adjusted Mortality Rate)",
+				"type": "String"
+			},
+			{
+				"name": "ACUTE MYOCARDIAL INFARCTION\n(# of Deaths)",
+				"type": "String"
+			},
+			{
+				"name": "ACUTE MYOCARDIAL INFARCTION\n(# of Cases)",
+				"type": "String"
+			},
+			{
+				"name": "ACUTE MYOCARDIAL INFARCTION\n(Outlier Ratings)",
+				"type": "String"
+			},
+			{
+				"name": "HEART FAILURE\n(Risk-Adjusted Mortality Rate)",
+				"type": "String"
+			},
+			{
+				"name": "HEART FAILURE\n(# of Deaths)",
+				"type": "String"
+			},
+			{
+				"name": "HEART FAILURE\n(# of Cases)",
+				"type": "String"
+			},
+			{
+				"name": "HEART FAILURE\n(Outlier Ratings)",
+				"type": "String"
+			},
+			{
+				"name": "ACUTE STROKE\n(Risk-Adjusted Mortality Rate)",
+				"type": "String"
+			},
+			{
+				"name": "ACUTE STROKE\n(# of Deaths)",
+				"type": "String"
+			},
+			{
+				"name": "ACUTE STROKE\n(# of Cases)",
+				"type": "String"
+			},
+			{
+				"name": "ACUTE STROKE (Outlier Ratings)",
+				"type": "String"
+			},
+			{
+				"name": "GI HEMORRHAGE (Risk-Adjusted Mortality Rate)",
+				"type": "String"
+			},
+			{
+				"name": "GI HEMORRHAGE\n(# of Deaths)",
+				"type": "String"
+			},
+			{
+				"name": "GI HEMORRHAGE\n(# of Cases)",
+				"type": "String"
+			},
+			{
+				"name": "GI HEMORRHAGE (Outlier Ratings)",
+				"type": "String"
+			},
+			{
+				"name": "HIP FRACTURE\n(Risk-Adjusted Mortality Rate)",
+				"type": "String"
+			},
+			{
+				"name": "HIP FRACTURE\n(# of Deaths)",
+				"type": "String"
+			},
+			{
+				"name": "HIP FRACTURE\n(# of Cases)",
+				"type": "String"
+			},
+			{
+				"name": "HIP FRACTURE (Outlier Ratings)",
+				"type": "String"
+			},
+			{
+				"name": "PNEUMONIA\n(Risk-Adjusted Mortality Rate)",
+				"type": "String"
+			},
+			{
+				"name": "PNEUMONIA\n(# of Deaths)",
+				"type": "String"
+			},
+			{
+				"name": "PNEUMONIA\n(# of Cases)",
+				"type": "String"
+			},
+			{
+				"name": "PNEUMONIA (Outlier Ratings)",
+				"type": "String"
+			},
+			{
+				"name": "PCI\n(Risk-Adjusted Mortality Rate)",
+				"type": "String"
+			},
+			{
+				"name": "PCI\n(# of Deaths)",
+				"type": "String"
+			},
+			{
+				"name": "PCI\n(# of Cases)",
+				"type": "String"
+			},
+			{
+				"name": "PCI\n(Outlier Ratings)",
+				"type": "String"
+			},
+			{
+				"name": "CAROTID ENDARTERECTOMY\n(Risk-Adjusted Mortality Rate)",
+				"type": "String"
+			},
+			{
+				"name": "CAROTID ENDARTERECTOMY\n(# of Deaths)",
+				"type": "String"
+			},
+			{
+				"name": "CAROTID ENDARTERECTOMY\n(# of Cases)",
+				"type": "String"
+			},
+			{
+				"name": "CAROTID ENDARTERECTOMY\n(Outlier Ratings)",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

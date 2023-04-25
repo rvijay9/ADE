@@ -1,0 +1,133 @@
+{
+	"name": "df_join_dept_employee",
+	"properties": {
+		"folder": {
+			"name": "df_venkat"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_src_db_dept",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_src_db_emp",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_Tgt_DB_DimEmployee",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"rejectedDataLinkedService": {
+						"referenceName": "Ls_dev_bs",
+						"type": "LinkedServiceReference"
+					}
+				}
+			],
+			"transformations": [
+				{
+					"name": "join1"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "select1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          deptno as integer,",
+				"          dname as string,",
+				"          dloc as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source(output(",
+				"          empno as integer,",
+				"          ename as string,",
+				"          ejob as string,",
+				"          esalary as double,",
+				"          deptno as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source2",
+				"source1, source2 join(source1@deptno == source2@deptno,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 derive(create_date = currentTimestamp(),",
+				"          load_date = currentTimestamp(),",
+				"          user_id = 'venkat') ~> derivedColumn1",
+				"select1 keyGenerate(output(ekey as long),",
+				"     startAt: 100L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"derivedColumn1 select(mapColumn(",
+				"          deptno = source1@deptno,",
+				"          dname,",
+				"          dloc,",
+				"          empno,",
+				"          ename,",
+				"          ejob,",
+				"          esalary,",
+				"          create_date,",
+				"          load_date,",
+				"          user_id",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"surrogateKey1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ekey as integer,",
+				"          empno as integer,",
+				"          ename as string,",
+				"          job as string,",
+				"          esalary as double,",
+				"          deptno as integer,",
+				"          created_date as timestamp,",
+				"          load_date as timestamp,",
+				"          userid as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ekey,",
+				"          empno,",
+				"          ename,",
+				"          job = ejob,",
+				"          esalary,",
+				"          deptno,",
+				"          created_date = create_date,",
+				"          load_date,",
+				"          userid = user_id",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

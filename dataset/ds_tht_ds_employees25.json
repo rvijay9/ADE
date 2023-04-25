@@ -1,0 +1,60 @@
+{
+	"name": "ds_tht_ds_employees25",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_db_adv",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Venkat_DS"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ekey",
+				"type": "varchar"
+			},
+			{
+				"name": "cust_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "cust_name",
+				"type": "varchar"
+			},
+			{
+				"name": "dep_no",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "dep_name",
+				"type": "varchar"
+			},
+			{
+				"name": "dep_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "created_date",
+				"type": "date"
+			},
+			{
+				"name": "load_date",
+				"type": "date"
+			},
+			{
+				"name": "user_name",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "dimemployees25"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

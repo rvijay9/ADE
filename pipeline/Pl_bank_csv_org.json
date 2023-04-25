@@ -1,0 +1,37 @@
+{
+	"name": "Pl_bank_csv_org",
+	"properties": {
+		"activities": [
+			{
+				"name": "DF_bank_org",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_bank_org",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "Neelima_PL"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-04-20T03:06:23Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

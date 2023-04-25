@@ -1,0 +1,81 @@
+{
+	"name": "DF_DB_Organization",
+	"properties": {
+		"folder": {
+			"name": "Vijay"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_Src_organization",
+						"type": "DatasetReference"
+					},
+					"name": "SrcOrganization"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_Tgt_Organization",
+						"type": "DatasetReference"
+					},
+					"name": "TgtOrganization"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Index as string,",
+				"          Name as string,",
+				"          Website as string,",
+				"          Country as string,",
+				"          Description as string,",
+				"          Founded as string,",
+				"          Industry as string,",
+				"          Total_Employees as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> SrcOrganization",
+				"SrcOrganization derive(Chng_Founded = toInteger(Founded),",
+				"          Chng_Total_Employees = toInteger(Total_Employees)) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          index_no as integer,",
+				"          orgname as string,",
+				"          website as string,",
+				"          country as string,",
+				"          orgdesc as string,",
+				"          founded as integer,",
+				"          industry as string,",
+				"          total_employees as long",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          index_no = Index,",
+				"          orgname = Name,",
+				"          website = Website,",
+				"          country = Country,",
+				"          orgdesc = Description,",
+				"          industry = Industry,",
+				"          founded = Chng_Founded,",
+				"          total_employees = Chng_Total_Employees",
+				"     )) ~> TgtOrganization"
+			]
+		}
+	}
+}

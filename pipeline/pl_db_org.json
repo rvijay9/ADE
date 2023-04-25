@@ -1,0 +1,37 @@
+{
+	"name": "pl_db_org",
+	"properties": {
+		"activities": [
+			{
+				"name": "df_db_vorg_15042023",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "df_db_vorg_15042023",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "Venkat_PL"
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-04-15T07:22:12Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
