@@ -1,0 +1,205 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-dev-hyd"
+		},
+		"AzureBlobStorage2_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage2'"
+		},
+		"Ls_dev_bs_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Ls_dev_bs'"
+		},
+		"asql_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'asql'"
+		},
+		"asql_dt_st_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'asql_dt_st'"
+		},
+		"az_db__adv_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'az_db__adv'"
+		},
+		"az_db_adv_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'az_db_adv'"
+		},
+		"copy_data_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'copy_data'"
+		},
+		"copy_database_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'copy_database'"
+		},
+		"ls_db_adv_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_db_adv'"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "adf-dev-hyd_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureBlobStorage2_connectionString": {
+						"value": "[parameters('AzureBlobStorage2_connectionString')]"
+					},
+					"Ls_dev_bs_connectionString": {
+						"value": "[parameters('Ls_dev_bs_connectionString')]"
+					},
+					"asql_connectionString": {
+						"value": "[parameters('asql_connectionString')]"
+					},
+					"asql_dt_st_connectionString": {
+						"value": "[parameters('asql_dt_st_connectionString')]"
+					},
+					"az_db__adv_connectionString": {
+						"value": "[parameters('az_db__adv_connectionString')]"
+					},
+					"az_db_adv_connectionString": {
+						"value": "[parameters('az_db_adv_connectionString')]"
+					},
+					"copy_data_connectionString": {
+						"value": "[parameters('copy_data_connectionString')]"
+					},
+					"copy_database_connectionString": {
+						"value": "[parameters('copy_database_connectionString')]"
+					},
+					"ls_db_adv_connectionString": {
+						"value": "[parameters('ls_db_adv_connectionString')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "adf-dev-hyd_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf-dev-hyd_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "adf-dev-hyd_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf-dev-hyd_ArmTemplate_1')]"
+			]
+		},
+		{
+			"name": "adf-dev-hyd_ArmTemplate_3",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf-dev-hyd_ArmTemplate_2')]"
+			]
+		},
+		{
+			"name": "adf-dev-hyd_ArmTemplate_4",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_4.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf-dev-hyd_ArmTemplate_3')]"
+			]
+		},
+		{
+			"name": "adf-dev-hyd_ArmTemplate_5",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_5.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adf-dev-hyd_ArmTemplate_4')]"
+			]
+		}
+	]
+}

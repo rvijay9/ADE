@@ -1,0 +1,1719 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-dev-hyd"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_tht_ds_employees25')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_db_adv",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ekey",
+						"type": "varchar"
+					},
+					{
+						"name": "cust_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "cust_name",
+						"type": "varchar"
+					},
+					{
+						"name": "dep_no",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "dep_name",
+						"type": "varchar"
+					},
+					{
+						"name": "dep_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "created_date",
+						"type": "date"
+					},
+					{
+						"name": "load_date",
+						"type": "date"
+					},
+					{
+						"name": "user_name",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "dimemployees25"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pp1_src_org_csv1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Ls_dev_bs",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "organizations.csv",
+						"folderPath": "raw",
+						"container": "venkat-de"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Index",
+						"type": "String"
+					},
+					{
+						"name": "Name",
+						"type": "String"
+					},
+					{
+						"name": "Website",
+						"type": "String"
+					},
+					{
+						"name": "Country",
+						"type": "String"
+					},
+					{
+						"name": "Description",
+						"type": "String"
+					},
+					{
+						"name": "Founded",
+						"type": "String"
+					},
+					{
+						"name": "Industry",
+						"type": "String"
+					},
+					{
+						"name": "Total_Employees",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pp_src_org_csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Ls_dev_bs",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "organizations.csv",
+						"folderPath": "raw",
+						"container": "venkat-de"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Index",
+						"type": "String"
+					},
+					{
+						"name": "Name",
+						"type": "String"
+					},
+					{
+						"name": "Website",
+						"type": "String"
+					},
+					{
+						"name": "Country",
+						"type": "String"
+					},
+					{
+						"name": "Description",
+						"type": "String"
+					},
+					{
+						"name": "Founded",
+						"type": "String"
+					},
+					{
+						"name": "Industry",
+						"type": "String"
+					},
+					{
+						"name": "Total_Employees",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pp_tgt_org_csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Ls_dev_bs",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "staging",
+						"container": "venkat-de"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pp_tgt_org_csv1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Ls_dev_bs",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "staging",
+						"container": "venkat-de"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "(Risk-Adjusted Mortality Rate)\"",
+						"type": "String"
+					},
+					{
+						"name": "ESOPHAGEAL RESECTION",
+						"type": "String"
+					},
+					{
+						"name": "Prop_2",
+						"type": "String"
+					},
+					{
+						"name": "Prop_3",
+						"type": "String"
+					},
+					{
+						"name": "Prop_4",
+						"type": "String"
+					},
+					{
+						"name": "Prop_5",
+						"type": "String"
+					},
+					{
+						"name": "Prop_6",
+						"type": "String"
+					},
+					{
+						"name": "Prop_7",
+						"type": "String"
+					},
+					{
+						"name": "Prop_8",
+						"type": "String"
+					},
+					{
+						"name": "Prop_9",
+						"type": "String"
+					},
+					{
+						"name": "Prop_10",
+						"type": "String"
+					},
+					{
+						"name": "Prop_11",
+						"type": "String"
+					},
+					{
+						"name": "Prop_12",
+						"type": "String"
+					},
+					{
+						"name": "Prop_13",
+						"type": "String"
+					},
+					{
+						"name": "Prop_14",
+						"type": "String"
+					},
+					{
+						"name": "Prop_15",
+						"type": "String"
+					},
+					{
+						"name": "Prop_16",
+						"type": "String"
+					},
+					{
+						"name": "Prop_17",
+						"type": "String"
+					},
+					{
+						"name": "Prop_18",
+						"type": "String"
+					},
+					{
+						"name": "Prop_19",
+						"type": "String"
+					},
+					{
+						"name": "Prop_20",
+						"type": "String"
+					},
+					{
+						"name": "Prop_21",
+						"type": "String"
+					},
+					{
+						"name": "Prop_22",
+						"type": "String"
+					},
+					{
+						"name": "Prop_23",
+						"type": "String"
+					},
+					{
+						"name": "Prop_24",
+						"type": "String"
+					},
+					{
+						"name": "Prop_25",
+						"type": "String"
+					},
+					{
+						"name": "Prop_26",
+						"type": "String"
+					},
+					{
+						"name": "Prop_27",
+						"type": "String"
+					},
+					{
+						"name": "Prop_28",
+						"type": "String"
+					},
+					{
+						"name": "Prop_29",
+						"type": "String"
+					},
+					{
+						"name": "Prop_30",
+						"type": "String"
+					},
+					{
+						"name": "Prop_31",
+						"type": "String"
+					},
+					{
+						"name": "Prop_32",
+						"type": "String"
+					},
+					{
+						"name": "Prop_33",
+						"type": "String"
+					},
+					{
+						"name": "Prop_34",
+						"type": "String"
+					},
+					{
+						"name": "Prop_35",
+						"type": "String"
+					},
+					{
+						"name": "Prop_36",
+						"type": "String"
+					},
+					{
+						"name": "Prop_37",
+						"type": "String"
+					},
+					{
+						"name": "Prop_38",
+						"type": "String"
+					},
+					{
+						"name": "Prop_39",
+						"type": "String"
+					},
+					{
+						"name": "Prop_40",
+						"type": "String"
+					},
+					{
+						"name": "Prop_41",
+						"type": "String"
+					},
+					{
+						"name": "Prop_42",
+						"type": "String"
+					},
+					{
+						"name": "Prop_43",
+						"type": "String"
+					},
+					{
+						"name": "Prop_44",
+						"type": "String"
+					},
+					{
+						"name": "Prop_45",
+						"type": "String"
+					},
+					{
+						"name": "Prop_46",
+						"type": "String"
+					},
+					{
+						"name": "Prop_47",
+						"type": "String"
+					},
+					{
+						"name": "Prop_48",
+						"type": "String"
+					},
+					{
+						"name": "Prop_49",
+						"type": "String"
+					},
+					{
+						"name": "Prop_50",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Pl_bank_csv')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "Index",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Index",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Name",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Website",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Website",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Country",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Country",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Description",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Description",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Founded",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Founded",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Industry",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Industry",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Total_Employees",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Total_Employees",
+											"type": "String",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DS_src_bank_csv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DS_tgt_bank_csv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Neelima_PL"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-04-14T07:29:56Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_pp_cust')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_src_cust",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_tgt_cust",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Venkat_PL"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-04-14T07:29:56Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipp')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "pp_src_org_csv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "pp_tgt_org_csv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Venkat_PL"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-04-14T07:29:56Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/pp_src_org_csv')]",
+				"[concat(variables('factoryId'), '/datasets/pp_tgt_org_csv')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipp1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "pp1_src_org_csv1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "pp_tgt_org_csv1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Venkat_PL"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-04-14T07:29:56Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/pp1_src_org_csv1')]",
+				"[concat(variables('factoryId'), '/datasets/pp_tgt_org_csv1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ramana')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "csv_source_2011",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "csv_tgt_2011",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Venkat_PL"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-04-14T07:29:56Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_DB_Employee')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "Vijay"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Src_DB_Employee",
+								"type": "DatasetReference"
+							},
+							"name": "SrcDbEmployee"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_Tgt_DB_DimEmployee",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "surrogateKey1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          empno as integer,",
+						"          ename as string,",
+						"          ejob as string,",
+						"          esalary as double,",
+						"          deptno as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> SrcDbEmployee",
+						"SrcDbEmployee derive(Get_Load_Date = currentTimestamp(),",
+						"          Get_Created_Date = currentTimestamp(),",
+						"          GetUser = 'SQLSERVER') ~> derivedColumn1",
+						"derivedColumn1 keyGenerate(output(ekey as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ekey as integer,",
+						"          empno as integer,",
+						"          ename as string,",
+						"          job as string,",
+						"          esalary as double,",
+						"          deptno as integer,",
+						"          created_date as timestamp,",
+						"          load_date as timestamp,",
+						"          userid as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ekey,",
+						"          empno,",
+						"          ename,",
+						"          job = ejob,",
+						"          esalary,",
+						"          deptno,",
+						"          created_date = Get_Created_Date,",
+						"          load_date = Get_Load_Date,",
+						"          userid = GetUser",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_DB_Org')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DF_Neelima"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Org_src",
+								"type": "DatasetReference"
+							},
+							"name": "SrcOrgCsv"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_DB_Tgt_Org",
+								"type": "DatasetReference"
+							},
+							"name": "TgtOrgDBTbl"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          Index as string,",
+						"          Name as string,",
+						"          Website as string,",
+						"          Country as string,",
+						"          Description as string,",
+						"          Founded as string,",
+						"          Industry as string,",
+						"          Total_Employees as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> SrcOrgCsv",
+						"SrcOrgCsv sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> TgtOrgDBTbl"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_DB_Organization')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "Vijay"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Src_organization",
+								"type": "DatasetReference"
+							},
+							"name": "SrcOrganization"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_Tgt_Organization",
+								"type": "DatasetReference"
+							},
+							"name": "TgtOrganization"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Index as string,",
+						"          Name as string,",
+						"          Website as string,",
+						"          Country as string,",
+						"          Description as string,",
+						"          Founded as string,",
+						"          Industry as string,",
+						"          Total_Employees as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> SrcOrganization",
+						"SrcOrganization derive(Chng_Founded = toInteger(Founded),",
+						"          Chng_Total_Employees = toInteger(Total_Employees)) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          index_no as integer,",
+						"          orgname as string,",
+						"          website as string,",
+						"          country as string,",
+						"          orgdesc as string,",
+						"          founded as integer,",
+						"          industry as string,",
+						"          total_employees as long",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          index_no = Index,",
+						"          orgname = Name,",
+						"          website = Website,",
+						"          country = Country,",
+						"          orgdesc = Description,",
+						"          industry = Industry,",
+						"          founded = Chng_Founded,",
+						"          total_employees = Chng_Total_Employees",
+						"     )) ~> TgtOrganization"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_DB_medical')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DF_Neelima"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_DB_src_medical",
+								"type": "DatasetReference"
+							},
+							"name": "dfsrcmedical"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_DB_tgt_medical",
+								"type": "DatasetReference"
+							},
+							"name": "dftgtmedical"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          age as string,",
+						"          sex as string,",
+						"          bmi as string,",
+						"          children as string,",
+						"          smoker as string,",
+						"          region as string,",
+						"          charges as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> dfsrcmedical",
+						"dfsrcmedical sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> dftgtmedical"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_DB_sales')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DF_Neelima"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_DB_src_sales",
+								"type": "DatasetReference"
+							},
+							"name": "dbsales"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_DB_tgt_sales",
+								"type": "DatasetReference"
+							},
+							"name": "dbtgtsales"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          USERID as string,",
+						"          ORDERDATE as string,",
+						"          ORDERID as string,",
+						"          AMOUNTINFO as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> dbsales",
+						"dbsales sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> dbtgtsales"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_JAINER')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DF_Neelima"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_srcdata_dept",
+								"type": "DatasetReference"
+							},
+							"name": "srcdept"
+						},
+						{
+							"dataset": {
+								"referenceName": "DS_srcdata_emp",
+								"type": "DatasetReference"
+							},
+							"name": "srcemp"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_tgtdata_dim",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "join1"
+						},
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "select1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          deptno as integer,",
+						"          dname as string,",
+						"          dloc as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> srcdept",
+						"source(output(",
+						"          empno as integer,",
+						"          ename as string,",
+						"          ejob as string,",
+						"          esalary as double,",
+						"          deptno as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> srcemp",
+						"srcdept, srcemp join(srcdept@deptno == srcemp@deptno,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> join1",
+						"join1 derive(create_date = currentTimestamp(),",
+						"          loaddate = currentTimestamp(),",
+						"          userid = 'Neelima') ~> derivedColumn1",
+						"select1 keyGenerate(output(ekey1 as long),",
+						"     startAt: 100L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"derivedColumn1 select(mapColumn(",
+						"          deptno = srcdept@deptno,",
+						"          dname,",
+						"          dloc,",
+						"          empno,",
+						"          ename,",
+						"          ejob,",
+						"          esalary,",
+						"          create_date,",
+						"          loaddate,",
+						"          userid",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"surrogateKey1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ekey as integer,",
+						"          empno as integer,",
+						"          ename as string,",
+						"          job as string,",
+						"          esalary as double,",
+						"          deptno as integer,",
+						"          created_date as timestamp,",
+						"          load_date as timestamp,",
+						"          userid as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ekey = ekey1,",
+						"          empno,",
+						"          ename,",
+						"          job = ejob,",
+						"          esalary,",
+						"          deptno,",
+						"          created_date = create_date,",
+						"          load_date = loaddate,",
+						"          userid",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_OnlineSales_DB_Exp')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "Vijay"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_OnlineSales_Src",
+								"type": "DatasetReference"
+							},
+							"name": "SrcOnlinesales"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_Tgt_DB_Onlinesales",
+								"type": "DatasetReference"
+							},
+							"name": "TgtOnlineSales"
+						}
+					],
+					"transformations": [
+						{
+							"name": "DrvOnlineSales"
+						},
+						{
+							"name": "SelectColumns"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          InvoiceNo as string,",
+						"          StockCode as string,",
+						"          Description as string,",
+						"          Quantity as string,",
+						"          InvoiceDate as string,",
+						"          UnitPrice as string,",
+						"          CustomerID as string,",
+						"          Country as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> SrcOnlinesales",
+						"SrcOnlinesales derive(Chng_InvoiceNo = toInteger(InvoiceNo),",
+						"          Chng_Quantity = toInteger(Quantity),",
+						"          Chng_UnitPrice = toFloat(UnitPrice),",
+						"          Chng_CustomerId = toInteger(CustomerID)) ~> DrvOnlineSales",
+						"DrvOnlineSales select(mapColumn(",
+						"          StockCode,",
+						"          Description,",
+						"          Country,",
+						"          Chng_InvoiceNo,",
+						"          Chng_Quantity,",
+						"          Chng_UnitPrice,",
+						"          Chng_CustomerId,",
+						"          InvoiceDate",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SelectColumns",
+						"SelectColumns sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          invoiceno as long,",
+						"          stockcode as string,",
+						"          descriptions as string,",
+						"          quantity as long,",
+						"          invoicedate as string,",
+						"          unitprice as integer,",
+						"          customerid as long,",
+						"          country as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     dateFormat:'MM-dd-yyyy',",
+						"     timestampFormat:'MM/dd/yyyy HH:mm:ss',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          invoiceno = Chng_InvoiceNo,",
+						"          stockcode = StockCode,",
+						"          descriptions = Description,",
+						"          quantity = Chng_Quantity,",
+						"          invoicedate = InvoiceDate,",
+						"          unitprice = Chng_UnitPrice,",
+						"          customerid = Chng_CustomerId,",
+						"          country = Country",
+						"     )) ~> TgtOnlineSales"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_Org')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DF_Neelima"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Org_src",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_Tgt_Org",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          Index as string,",
+						"          Name as string,",
+						"          Website as string,",
+						"          Country as string,",
+						"          Description as string,",
+						"          Founded as string,",
+						"          Industry as string,",
+						"          Total_Employees as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:['Tgt_Organization.csv'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_Org_Drv_Selct')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "Vijay"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Src_organization",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_DB_Tgt_Org",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "drvChngFoundedTotalEmp"
+						},
+						{
+							"name": "SltOrganization"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Index as string,",
+						"          Name as string,",
+						"          Website as string,",
+						"          Country as string,",
+						"          Description as string,",
+						"          Founded as string,",
+						"          Industry as string,",
+						"          Total_Employees as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 derive(Chg_Founded = toInteger(Founded),",
+						"          Chg_TotalEmployees = toInteger(Total_Employees)) ~> drvChngFoundedTotalEmp",
+						"drvChngFoundedTotalEmp select(mapColumn(",
+						"          Index,",
+						"          Name,",
+						"          Website,",
+						"          Country,",
+						"          Description,",
+						"          Industry,",
+						"          Chg_Founded,",
+						"          Chg_TotalEmployees",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SltOrganization",
+						"SltOrganization sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_bank')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DF_Neelima"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_src_bank_csv_copy",
+								"type": "DatasetReference"
+							},
+							"name": "Bankcsv"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_tgt_bank_csv_copy",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          Index as string,",
+						"          Name as string,",
+						"          Website as string,",
+						"          Country as string,",
+						"          Description as string,",
+						"          Founded as string,",
+						"          Industry as string,",
+						"          Total_Employees as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> Bankcsv",
+						"Bankcsv sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

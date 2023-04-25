@@ -1,0 +1,42 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adf-dev-hyd"
+		},
+		"AzureBlobStorage2_connectionString": {
+			"value": ""
+		},
+		"Ls_dev_bs_connectionString": {
+			"value": ""
+		},
+		"asql_connectionString": {
+			"value": ""
+		},
+		"asql_dt_st_connectionString": {
+			"value": ""
+		},
+		"az_db__adv_connectionString": {
+			"value": ""
+		},
+		"az_db_adv_connectionString": {
+			"value": ""
+		},
+		"copy_data_connectionString": {
+			"value": ""
+		},
+		"copy_database_connectionString": {
+			"value": ""
+		},
+		"ls_db_adv_connectionString": {
+			"value": ""
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

@@ -1,0 +1,1696 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-dev-hyd"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_bank_org')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DF_Neelima"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_src_bank_org",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "Ds_tgt_bank_org",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "drvchngfoundedtalemployes"
+						},
+						{
+							"name": "select1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Index as string,",
+						"          Name as string,",
+						"          Website as string,",
+						"          Country as string,",
+						"          Description as string,",
+						"          Founded as string,",
+						"          Industry as string,",
+						"          Total_Employees as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 derive(Chng_Founded = toInteger(Founded),",
+						"          Chng_TotalEmployees = toInteger(Total_Employees)) ~> drvchngfoundedtalemployes",
+						"drvchngfoundedtalemployes select(mapColumn(",
+						"          Index,",
+						"          Name,",
+						"          Website,",
+						"          Country,",
+						"          Description,",
+						"          Industry,",
+						"          Chng_Founded,",
+						"          Chng_TotalEmployees",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          Index,",
+						"          Name,",
+						"          Website,",
+						"          Country,",
+						"          Description,",
+						"          Industry,",
+						"          Chng_Founded,",
+						"          Chng_TotalEmployees",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_online_sales')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DF_Neelima"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_src_online_retail",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_tgt_online_retail",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "select1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          InvoiceNo as string,",
+						"          StockCode as string,",
+						"          Description as string,",
+						"          Quantity as string,",
+						"          InvoiceDate as string,",
+						"          UnitPrice as string,",
+						"          CustomerID as string,",
+						"          Country as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 derive(Chn_invoiceno = toInteger(InvoiceNo),",
+						"          Cnh_quantity = toInteger(Quantity),",
+						"          Chn_customerid = toInteger(CustomerID),",
+						"          Chn_unitprice = toFloat(UnitPrice)) ~> derivedColumn1",
+						"derivedColumn1 select(mapColumn(",
+						"          InvoiceNo = Chn_invoiceno,",
+						"          StockCode,",
+						"          Description,",
+						"          Quantity = Cnh_quantity,",
+						"          InvoiceDate,",
+						"          UnitPrice = Chn_unitprice,",
+						"          CustomerID = Chn_customerid,",
+						"          Country",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          invoiceno as long,",
+						"          stockcode as string,",
+						"          descriptions as string,",
+						"          quantity as long,",
+						"          invoicedate as string,",
+						"          unitprice as integer,",
+						"          customerid as long,",
+						"          country as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          invoiceno = InvoiceNo,",
+						"          stockcode = StockCode,",
+						"          descriptions = Description,",
+						"          quantity = Quantity,",
+						"          invoicedate = InvoiceDate,",
+						"          unitprice = UnitPrice,",
+						"          customerid = CustomerID,",
+						"          country = Country",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DF_sales')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DF_Neelima"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_src_sales_csv",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_tgt_sales_csv",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          COUNTY as string,",
+						"          HOSPITAL as string,",
+						"          {COMMENT LETTERS} as string,",
+						"          {ESOPHAGEAL RESECTION\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {ESOPHAGEAL RESECTION\\n(# of Deaths)} as string,",
+						"          {ESOPHAGEAL RESECTION\\n(# of Cases)} as string,",
+						"          {ESOPHAGEAL RESECTION\\n(Outlier Ratings)} as string,",
+						"          {PANCREATIC RESECTION\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {PANCREATIC RESECTION\\n(# of Deaths)} as string,",
+						"          {PANCREATIC RESECTION\\n(# of Cases)} as string,",
+						"          {PANCREATIC RESECTION\\n(Outlier Ratings)} as string,",
+						"          {AAA REPAIR\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {AAA REPAIR\\n(# of Deaths)} as string,",
+						"          {AAA REPAIR\\n(# of Cases)} as string,",
+						"          {AAA REPAIR    (Outlier Ratings)} as string,",
+						"          {CRANIOTOMY\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {CRANIOTOMY\\n(# of Deaths)} as string,",
+						"          {CRANIOTOMY\\n(# of Cases)} as string,",
+						"          {CRANIOTOMY (Outlier Ratings)} as string,",
+						"          {ACUTE MYOCARDIAL INFARCTION\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {ACUTE MYOCARDIAL INFARCTION\\n(# of Deaths)} as string,",
+						"          {ACUTE MYOCARDIAL INFARCTION\\n(# of Cases)} as string,",
+						"          {ACUTE MYOCARDIAL INFARCTION\\n(Outlier Ratings)} as string,",
+						"          {HEART FAILURE\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {HEART FAILURE\\n(# of Deaths)} as string,",
+						"          {HEART FAILURE\\n(# of Cases)} as string,",
+						"          {HEART FAILURE\\n(Outlier Ratings)} as string,",
+						"          {ACUTE STROKE\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {ACUTE STROKE\\n(# of Deaths)} as string,",
+						"          {ACUTE STROKE\\n(# of Cases)} as string,",
+						"          {ACUTE STROKE (Outlier Ratings)} as string,",
+						"          {GI HEMORRHAGE (Risk-Adjusted Mortality Rate)} as string,",
+						"          {GI HEMORRHAGE\\n(# of Deaths)} as string,",
+						"          {GI HEMORRHAGE\\n(# of Cases)} as string,",
+						"          {GI HEMORRHAGE (Outlier Ratings)} as string,",
+						"          {HIP FRACTURE\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {HIP FRACTURE\\n(# of Deaths)} as string,",
+						"          {HIP FRACTURE\\n(# of Cases)} as string,",
+						"          {HIP FRACTURE (Outlier Ratings)} as string,",
+						"          {PNEUMONIA\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {PNEUMONIA\\n(# of Deaths)} as string,",
+						"          {PNEUMONIA\\n(# of Cases)} as string,",
+						"          {PNEUMONIA (Outlier Ratings)} as string,",
+						"          {PCI\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {PCI\\n(# of Deaths)} as string,",
+						"          {PCI\\n(# of Cases)} as string,",
+						"          {PCI\\n(Outlier Ratings)} as string,",
+						"          {CAROTID ENDARTERECTOMY\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {CAROTID ENDARTERECTOMY\\n(# of Deaths)} as string,",
+						"          {CAROTID ENDARTERECTOMY\\n(# of Cases)} as string,",
+						"          {CAROTID ENDARTERECTOMY\\n(Outlier Ratings)} as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "df_venkat"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "pp_src_org_csv",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "pp_tgt_org_csv",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          Index as string,",
+						"          Name as string,",
+						"          Website as string,",
+						"          Country as string,",
+						"          Description as string,",
+						"          Founded as string,",
+						"          Industry as string,",
+						"          Total_Employees as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow2')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "DF_Neelima"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_src_bank_csv",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_tgt_bank_csv",
+								"type": "DatasetReference"
+							},
+							"name": "sink1",
+							"rejectedDataLinkedService": {
+								"referenceName": "Ls_dev_bs",
+								"type": "LinkedServiceReference"
+							}
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          Index as string,",
+						"          Name as string,",
+						"          Website as string,",
+						"          Country as string,",
+						"          Description as string,",
+						"          Founded as string,",
+						"          Industry as string,",
+						"          Total_Employees as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow3')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "df_venkat"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_src_product_json",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_tgt_product_json",
+								"type": "DatasetReference"
+							},
+							"name": "sink1",
+							"rejectedDataLinkedService": {
+								"referenceName": "Ls_dev_bs",
+								"type": "LinkedServiceReference"
+							}
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          id as integer,",
+						"          name as string,",
+						"          vendor_id as integer,",
+						"          requires_shipping as boolean,",
+						"          sku as string,",
+						"          taxable as boolean,",
+						"          status as string,",
+						"          price as integer,",
+						"          vendor as (id as integer, name as string),",
+						"          details as (track_id as integer, name as string, album_id as integer, media_type_id as integer, genre_id as integer, composer as string, milliseconds as integer, bytes as integer, unit_price as double)[]",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     documentForm: 'documentPerLine') ~> source1",
+						"source1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          id as integer,",
+						"          email as string,",
+						"          first as string,",
+						"          last as string,",
+						"          company as string,",
+						"          created_at as string,",
+						"          country as string",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow4')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "df_venkat"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_src_fb",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_tgt_fb",
+								"type": "DatasetReference"
+							},
+							"name": "sink1",
+							"rejectedDataLinkedService": {
+								"referenceName": "Ls_dev_bs",
+								"type": "LinkedServiceReference"
+							}
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          Date as string,",
+						"          Open as string,",
+						"          High as string,",
+						"          Low as string,",
+						"          Close as string,",
+						"          {Adj Close} as string,",
+						"          Volume as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow5')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "df_venkat"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_src_medical",
+								"type": "DatasetReference"
+							},
+							"name": "medical"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_tgt_medical",
+								"type": "DatasetReference"
+							},
+							"name": "output"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          age as string,",
+						"          sex as string,",
+						"          bmi as string,",
+						"          children as string,",
+						"          smoker as string,",
+						"          region as string,",
+						"          charges as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> medical",
+						"medical sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> output"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_24')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "df_venkat"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_src_db_customers_24",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_src_db_department24",
+								"type": "DatasetReference"
+							},
+							"name": "source2"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_tht_ds_employees25",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "join1"
+						},
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "select1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          cust_id as integer,",
+						"          cust_name as string,",
+						"          cust_address as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> source1",
+						"source(output(",
+						"          dep_no as integer,",
+						"          dep_name as string,",
+						"          dep_id as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> source2",
+						"source1, source2 join(cust_id == dep_id,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> join1",
+						"join1 derive(created_date = currentTimestamp(),",
+						"          load_date = currentTimestamp(),",
+						"          user_name = 'balaji') ~> derivedColumn1",
+						"derivedColumn1 keyGenerate(output(ekey as long),",
+						"     startAt: 1001L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"surrogateKey1 select(mapColumn(",
+						"          cust_id,",
+						"          cust_name,",
+						"          cust_address,",
+						"          dep_no,",
+						"          dep_name,",
+						"          dep_id,",
+						"          created_date,",
+						"          load_date,",
+						"          user_name,",
+						"          ekey",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ekey as string,",
+						"          cust_id as integer,",
+						"          cust_name as string,",
+						"          dep_no as integer,",
+						"          dep_name as string,",
+						"          dep_id as integer,",
+						"          created_date as date,",
+						"          load_date as date,",
+						"          user_name as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ekey,",
+						"          cust_id,",
+						"          cust_name,",
+						"          dep_no,",
+						"          dep_name,",
+						"          dep_id,",
+						"          created_date,",
+						"          load_date,",
+						"          user_name",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_copy_calfornia_health_2010')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "df_venkat"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_src_calfornia_health_2010",
+								"type": "DatasetReference"
+							},
+							"name": "Srccalforniahealth2010"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_tgt_stagging_calfornia_health",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          COUNTY as string,",
+						"          HOSPITAL as string,",
+						"          {COMMENT LETTERS} as string,",
+						"          {ESOPHAGEAL RESECTION\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {ESOPHAGEAL RESECTION\\n(# of Deaths)} as string,",
+						"          {ESOPHAGEAL RESECTION\\n(# of Cases)} as string,",
+						"          {ESOPHAGEAL RESECTION\\n(Outlier Ratings)} as string,",
+						"          {PANCREATIC RESECTION\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {PANCREATIC RESECTION\\n(# of Deaths)} as string,",
+						"          {PANCREATIC RESECTION\\n(# of Cases)} as string,",
+						"          {PANCREATIC RESECTION\\n(Outlier Ratings)} as string,",
+						"          {AAA REPAIR\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {AAA REPAIR\\n(# of Deaths)} as string,",
+						"          {AAA REPAIR\\n(# of Cases)} as string,",
+						"          {AAA REPAIR    (Outlier Ratings)} as string,",
+						"          {CRANIOTOMY\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {CRANIOTOMY\\n(# of Deaths)} as string,",
+						"          {CRANIOTOMY\\n(# of Cases)} as string,",
+						"          {CRANIOTOMY (Outlier Ratings)} as string,",
+						"          {ACUTE MYOCARDIAL INFARCTION\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {ACUTE MYOCARDIAL INFARCTION\\n(# of Deaths)} as string,",
+						"          {ACUTE MYOCARDIAL INFARCTION\\n(# of Cases)} as string,",
+						"          {ACUTE MYOCARDIAL INFARCTION\\n(Outlier Ratings)} as string,",
+						"          {HEART FAILURE\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {HEART FAILURE\\n(# of Deaths)} as string,",
+						"          {HEART FAILURE\\n(# of Cases)} as string,",
+						"          {HEART FAILURE\\n(Outlier Ratings)} as string,",
+						"          {ACUTE STROKE\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {ACUTE STROKE\\n(# of Deaths)} as string,",
+						"          {ACUTE STROKE\\n(# of Cases)} as string,",
+						"          {ACUTE STROKE (Outlier Ratings)} as string,",
+						"          {GI HEMORRHAGE (Risk-Adjusted Mortality Rate)} as string,",
+						"          {GI HEMORRHAGE\\n(# of Deaths)} as string,",
+						"          {GI HEMORRHAGE\\n(# of Cases)} as string,",
+						"          {GI HEMORRHAGE (Outlier Ratings)} as string,",
+						"          {HIP FRACTURE\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {HIP FRACTURE\\n(# of Deaths)} as string,",
+						"          {HIP FRACTURE\\n(# of Cases)} as string,",
+						"          {HIP FRACTURE (Outlier Ratings)} as string,",
+						"          {PNEUMONIA\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {PNEUMONIA\\n(# of Deaths)} as string,",
+						"          {PNEUMONIA\\n(# of Cases)} as string,",
+						"          {PNEUMONIA (Outlier Ratings)} as string,",
+						"          {PCI\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {PCI\\n(# of Deaths)} as string,",
+						"          {PCI\\n(# of Cases)} as string,",
+						"          {PCI\\n(Outlier Ratings)} as string,",
+						"          {CAROTID ENDARTERECTOMY\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {CAROTID ENDARTERECTOMY\\n(# of Deaths)} as string,",
+						"          {CAROTID ENDARTERECTOMY\\n(# of Cases)} as string,",
+						"          {CAROTID ENDARTERECTOMY\\n(Outlier Ratings)} as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> Srccalforniahealth2010",
+						"Srccalforniahealth2010 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:['tgt_health_2010.csv'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_copy_california_health_2010')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "df_venkat"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Src_California_health_2010",
+								"type": "DatasetReference"
+							},
+							"name": "Srccaliforniahealth2010"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_tgt_stagging_california_health",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          COUNTY as string,",
+						"          HOSPITAL as string,",
+						"          {COMMENT LETTERS} as string,",
+						"          {ESOPHAGEAL RESECTION\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {ESOPHAGEAL RESECTION\\n(# of Deaths)} as string,",
+						"          {ESOPHAGEAL RESECTION\\n(# of Cases)} as string,",
+						"          {ESOPHAGEAL RESECTION\\n(Outlier Ratings)} as string,",
+						"          {PANCREATIC RESECTION\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {PANCREATIC RESECTION\\n(# of Deaths)} as string,",
+						"          {PANCREATIC RESECTION\\n(# of Cases)} as string,",
+						"          {PANCREATIC RESECTION\\n(Outlier Ratings)} as string,",
+						"          {AAA REPAIR\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {AAA REPAIR\\n(# of Deaths)} as string,",
+						"          {AAA REPAIR\\n(# of Cases)} as string,",
+						"          {AAA REPAIR    (Outlier Ratings)} as string,",
+						"          {CRANIOTOMY\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {CRANIOTOMY\\n(# of Deaths)} as string,",
+						"          {CRANIOTOMY\\n(# of Cases)} as string,",
+						"          {CRANIOTOMY (Outlier Ratings)} as string,",
+						"          {ACUTE MYOCARDIAL INFARCTION\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {ACUTE MYOCARDIAL INFARCTION\\n(# of Deaths)} as string,",
+						"          {ACUTE MYOCARDIAL INFARCTION\\n(# of Cases)} as string,",
+						"          {ACUTE MYOCARDIAL INFARCTION\\n(Outlier Ratings)} as string,",
+						"          {HEART FAILURE\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {HEART FAILURE\\n(# of Deaths)} as string,",
+						"          {HEART FAILURE\\n(# of Cases)} as string,",
+						"          {HEART FAILURE\\n(Outlier Ratings)} as string,",
+						"          {ACUTE STROKE\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {ACUTE STROKE\\n(# of Deaths)} as string,",
+						"          {ACUTE STROKE\\n(# of Cases)} as string,",
+						"          {ACUTE STROKE (Outlier Ratings)} as string,",
+						"          {GI HEMORRHAGE (Risk-Adjusted Mortality Rate)} as string,",
+						"          {GI HEMORRHAGE\\n(# of Deaths)} as string,",
+						"          {GI HEMORRHAGE\\n(# of Cases)} as string,",
+						"          {GI HEMORRHAGE (Outlier Ratings)} as string,",
+						"          {HIP FRACTURE\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {HIP FRACTURE\\n(# of Deaths)} as string,",
+						"          {HIP FRACTURE\\n(# of Cases)} as string,",
+						"          {HIP FRACTURE (Outlier Ratings)} as string,",
+						"          {PNEUMONIA\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {PNEUMONIA\\n(# of Deaths)} as string,",
+						"          {PNEUMONIA\\n(# of Cases)} as string,",
+						"          {PNEUMONIA (Outlier Ratings)} as string,",
+						"          {PCI\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {PCI\\n(# of Deaths)} as string,",
+						"          {PCI\\n(# of Cases)} as string,",
+						"          {PCI\\n(Outlier Ratings)} as string,",
+						"          {CAROTID ENDARTERECTOMY\\n(Risk-Adjusted Mortality Rate)} as string,",
+						"          {CAROTID ENDARTERECTOMY\\n(# of Deaths)} as string,",
+						"          {CAROTID ENDARTERECTOMY\\n(# of Cases)} as string,",
+						"          {CAROTID ENDARTERECTOMY\\n(Outlier Ratings)} as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> Srccaliforniahealth2010",
+						"Srccaliforniahealth2010 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:['tgt_health_2010.csv'],",
+						"     truncate: true,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_db_vorg_15042023')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "df_venkat"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DS_Org_src",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_tgt_db_org",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          Index as string,",
+						"          Name as string,",
+						"          Website as string,",
+						"          Country as string,",
+						"          Description as string,",
+						"          Founded as string,",
+						"          Industry as string,",
+						"          Total_Employees as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_join_dept_customers25')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "df_venkat"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_src_db_customers_24",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_src_db_department24",
+								"type": "DatasetReference"
+							},
+							"name": "source2"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_tgt_db_dimemployee25",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "join1"
+						},
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "select1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          cust_id as integer,",
+						"          cust_name as string,",
+						"          cust_address as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> source1",
+						"source(output(",
+						"          dep_no as integer,",
+						"          dep_name as string,",
+						"          dep_id as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> source2",
+						"source1, source2 join(cust_id == dep_id,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> join1",
+						"join1 derive(create_date = currentTimestamp(),",
+						"          load_date = currentTimestamp(),",
+						"          user_name = 'pream') ~> derivedColumn1",
+						"derivedColumn1 select(mapColumn(",
+						"          cust_id,",
+						"          cust_name,",
+						"          cust_address,",
+						"          dep_no,",
+						"          dep_name,",
+						"          dep_id,",
+						"          create_date,",
+						"          load_date,",
+						"          user_name",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          cust_id as integer,",
+						"          cust_name as string,",
+						"          dep_no as integer,",
+						"          dep_name as string,",
+						"          dep_id as integer,",
+						"          created_date as date,",
+						"          lod_date as date,",
+						"          user_name as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          cust_name,",
+						"          dep_no,",
+						"          dep_name,",
+						"          dep_id,",
+						"          created_date = create_date,",
+						"          lod_date = load_date,",
+						"          user_name",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_join_dept_employee')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "df_venkat"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_src_db_dept",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_src_db_emp",
+								"type": "DatasetReference"
+							},
+							"name": "source2"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DS_Tgt_DB_DimEmployee",
+								"type": "DatasetReference"
+							},
+							"name": "sink1",
+							"rejectedDataLinkedService": {
+								"referenceName": "Ls_dev_bs",
+								"type": "LinkedServiceReference"
+							}
+						}
+					],
+					"transformations": [
+						{
+							"name": "join1"
+						},
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "surrogateKey1"
+						},
+						{
+							"name": "select1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          deptno as integer,",
+						"          dname as string,",
+						"          dloc as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> source1",
+						"source(output(",
+						"          empno as integer,",
+						"          ename as string,",
+						"          ejob as string,",
+						"          esalary as double,",
+						"          deptno as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> source2",
+						"source1, source2 join(source1@deptno == source2@deptno,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> join1",
+						"join1 derive(create_date = currentTimestamp(),",
+						"          load_date = currentTimestamp(),",
+						"          user_id = 'venkat') ~> derivedColumn1",
+						"select1 keyGenerate(output(ekey as long),",
+						"     startAt: 100L,",
+						"     stepValue: 1L) ~> surrogateKey1",
+						"derivedColumn1 select(mapColumn(",
+						"          deptno = source1@deptno,",
+						"          dname,",
+						"          dloc,",
+						"          empno,",
+						"          ename,",
+						"          ejob,",
+						"          esalary,",
+						"          create_date,",
+						"          load_date,",
+						"          user_id",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"surrogateKey1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          ekey as integer,",
+						"          empno as integer,",
+						"          ename as string,",
+						"          job as string,",
+						"          esalary as double,",
+						"          deptno as integer,",
+						"          created_date as timestamp,",
+						"          load_date as timestamp,",
+						"          userid as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ekey,",
+						"          empno,",
+						"          ename,",
+						"          job = ejob,",
+						"          esalary,",
+						"          deptno,",
+						"          created_date = create_date,",
+						"          load_date,",
+						"          userid = user_id",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_new')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "df_venkat"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "pp_src_org_csv",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_tgt_organizations_18",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "select1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Index as string,",
+						"          Name as string,",
+						"          Website as string,",
+						"          Country as string,",
+						"          Description as string,",
+						"          Founded as string,",
+						"          Industry as string,",
+						"          Total_Employees as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 derive(chng_founded = toInteger(Founded),",
+						"          Chag_TotalEmployees = toInteger(Total_Employees)) ~> derivedColumn1",
+						"derivedColumn1 select(mapColumn(",
+						"          Index,",
+						"          Name,",
+						"          Website,",
+						"          Country,",
+						"          Description,",
+						"          Industry,",
+						"          chng_founded,",
+						"          Chag_TotalEmployees",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          index_no as integer,",
+						"          orgname as string,",
+						"          website as string,",
+						"          country as string,",
+						"          orgdesc as string,",
+						"          founded as integer,",
+						"          industry as string,",
+						"          total_employees as long",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     truncate:true,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          index_no = Index,",
+						"          orgname = Name,",
+						"          website = Website,",
+						"          country = Country,",
+						"          orgdesc = Description,",
+						"          founded = chng_founded,",
+						"          industry = Industry,",
+						"          total_employees = Chag_TotalEmployees",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_retail_21')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "df_venkat"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_src_retail",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_tgt_retail_21",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "select1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          InvoiceNo as string,",
+						"          StockCode as string,",
+						"          Description as string,",
+						"          Quantity as string,",
+						"          InvoiceDate as string,",
+						"          UnitPrice as string,",
+						"          CustomerID as string,",
+						"          Country as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 derive(ch_invoiceno = toInteger(InvoiceNo),",
+						"          ch_unitprice = toFloat(UnitPrice),",
+						"          ch_quantity = toInteger(Quantity),",
+						"          ch_customerid = toInteger(CustomerID),",
+						"     partitionBy('hash', 1)) ~> derivedColumn1",
+						"derivedColumn1 select(mapColumn(",
+						"          StockCode,",
+						"          Description,",
+						"          InvoiceDate,",
+						"          Country,",
+						"          ch_invoiceno,",
+						"          ch_unitprice,",
+						"          ch_quantity,",
+						"          ch_customerid",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          invoiceno as long,",
+						"          stockcode as string,",
+						"          descriptions as string,",
+						"          quantity as long,",
+						"          invoicedate as string,",
+						"          unitprice as integer,",
+						"          customerid as long,",
+						"          country as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          invoiceno = ch_invoiceno,",
+						"          stockcode = StockCode,",
+						"          descriptions = Description,",
+						"          quantity = ch_quantity,",
+						"          invoicedate = InvoiceDate,",
+						"          unitprice = ch_unitprice,",
+						"          customerid = ch_customerid,",
+						"          country = Country",
+						"     )) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pp_df_org_csv1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"folder": {
+					"name": "df_venkat"
+				},
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "pp1_src_org_csv1",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "pp_tgt_org_csv1",
+								"type": "DatasetReference"
+							},
+							"name": "sink1",
+							"rejectedDataLinkedService": {
+								"referenceName": "Ls_dev_bs",
+								"type": "LinkedServiceReference"
+							}
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          Index as string,",
+						"          Name as string,",
+						"          Website as string,",
+						"          Country as string,",
+						"          Description as string,",
+						"          Founded as string,",
+						"          Industry as string,",
+						"          Total_Employees as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          {(Risk-Adjusted Mortality Rate)\"} as string,",
+						"          {ESOPHAGEAL RESECTION} as string,",
+						"          Prop_2 as string,",
+						"          Prop_3 as string,",
+						"          Prop_4 as string,",
+						"          Prop_5 as string,",
+						"          Prop_6 as string,",
+						"          Prop_7 as string,",
+						"          Prop_8 as string,",
+						"          Prop_9 as string,",
+						"          Prop_10 as string,",
+						"          Prop_11 as string,",
+						"          Prop_12 as string,",
+						"          Prop_13 as string,",
+						"          Prop_14 as string,",
+						"          Prop_15 as string,",
+						"          Prop_16 as string,",
+						"          Prop_17 as string,",
+						"          Prop_18 as string,",
+						"          Prop_19 as string,",
+						"          Prop_20 as string,",
+						"          Prop_21 as string,",
+						"          Prop_22 as string,",
+						"          Prop_23 as string,",
+						"          Prop_24 as string,",
+						"          Prop_25 as string,",
+						"          Prop_26 as string,",
+						"          Prop_27 as string,",
+						"          Prop_28 as string,",
+						"          Prop_29 as string,",
+						"          Prop_30 as string,",
+						"          Prop_31 as string,",
+						"          Prop_32 as string,",
+						"          Prop_33 as string,",
+						"          Prop_34 as string,",
+						"          Prop_35 as string,",
+						"          Prop_36 as string,",
+						"          Prop_37 as string,",
+						"          Prop_38 as string,",
+						"          Prop_39 as string,",
+						"          Prop_40 as string,",
+						"          Prop_41 as string,",
+						"          Prop_42 as string,",
+						"          Prop_43 as string,",
+						"          Prop_44 as string,",
+						"          Prop_45 as string,",
+						"          Prop_46 as string,",
+						"          Prop_47 as string,",
+						"          Prop_48 as string,",
+						"          Prop_49 as string,",
+						"          Prop_50 as string",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_DB_Organization')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "DF_DB_Organization",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DF_DB_Organization",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"SrcOrganization": {},
+									"TgtOrganization": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "VIjay"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-04-19T03:20:33Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_DB_Sales')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "DF_DB_sales",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DF_DB_sales",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"dbsales": {},
+									"dbtgtsales": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Neelima_PL"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-04-15T07:41:06Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PL_DB_medical')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "DF_DB_medical",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "DF_DB_medical",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"dfsrcmedical": {},
+									"dftgtmedical": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Neelima_PL"
+				},
+				"annotations": [],
+				"lastPublishTime": "2023-04-15T09:08:55Z"
+			},
+			"dependsOn": []
+		}
+	]
+}

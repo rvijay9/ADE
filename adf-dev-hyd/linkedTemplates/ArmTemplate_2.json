@@ -1,0 +1,1149 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-dev-hyd"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_src_calfornia_health_2010')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Ls_dev_bs",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "california_health_2010.csv",
+						"folderPath": "raw",
+						"container": "venkat-de"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "COUNTY",
+						"type": "String"
+					},
+					{
+						"name": "HOSPITAL",
+						"type": "String"
+					},
+					{
+						"name": "COMMENT LETTERS",
+						"type": "String"
+					},
+					{
+						"name": "ESOPHAGEAL RESECTION\n(Risk-Adjusted Mortality Rate)",
+						"type": "String"
+					},
+					{
+						"name": "ESOPHAGEAL RESECTION\n(# of Deaths)",
+						"type": "String"
+					},
+					{
+						"name": "ESOPHAGEAL RESECTION\n(# of Cases)",
+						"type": "String"
+					},
+					{
+						"name": "ESOPHAGEAL RESECTION\n(Outlier Ratings)",
+						"type": "String"
+					},
+					{
+						"name": "PANCREATIC RESECTION\n(Risk-Adjusted Mortality Rate)",
+						"type": "String"
+					},
+					{
+						"name": "PANCREATIC RESECTION\n(# of Deaths)",
+						"type": "String"
+					},
+					{
+						"name": "PANCREATIC RESECTION\n(# of Cases)",
+						"type": "String"
+					},
+					{
+						"name": "PANCREATIC RESECTION\n(Outlier Ratings)",
+						"type": "String"
+					},
+					{
+						"name": "AAA REPAIR\n(Risk-Adjusted Mortality Rate)",
+						"type": "String"
+					},
+					{
+						"name": "AAA REPAIR\n(# of Deaths)",
+						"type": "String"
+					},
+					{
+						"name": "AAA REPAIR\n(# of Cases)",
+						"type": "String"
+					},
+					{
+						"name": "AAA REPAIR    (Outlier Ratings)",
+						"type": "String"
+					},
+					{
+						"name": "CRANIOTOMY\n(Risk-Adjusted Mortality Rate)",
+						"type": "String"
+					},
+					{
+						"name": "CRANIOTOMY\n(# of Deaths)",
+						"type": "String"
+					},
+					{
+						"name": "CRANIOTOMY\n(# of Cases)",
+						"type": "String"
+					},
+					{
+						"name": "CRANIOTOMY (Outlier Ratings)",
+						"type": "String"
+					},
+					{
+						"name": "ACUTE MYOCARDIAL INFARCTION\n(Risk-Adjusted Mortality Rate)",
+						"type": "String"
+					},
+					{
+						"name": "ACUTE MYOCARDIAL INFARCTION\n(# of Deaths)",
+						"type": "String"
+					},
+					{
+						"name": "ACUTE MYOCARDIAL INFARCTION\n(# of Cases)",
+						"type": "String"
+					},
+					{
+						"name": "ACUTE MYOCARDIAL INFARCTION\n(Outlier Ratings)",
+						"type": "String"
+					},
+					{
+						"name": "HEART FAILURE\n(Risk-Adjusted Mortality Rate)",
+						"type": "String"
+					},
+					{
+						"name": "HEART FAILURE\n(# of Deaths)",
+						"type": "String"
+					},
+					{
+						"name": "HEART FAILURE\n(# of Cases)",
+						"type": "String"
+					},
+					{
+						"name": "HEART FAILURE\n(Outlier Ratings)",
+						"type": "String"
+					},
+					{
+						"name": "ACUTE STROKE\n(Risk-Adjusted Mortality Rate)",
+						"type": "String"
+					},
+					{
+						"name": "ACUTE STROKE\n(# of Deaths)",
+						"type": "String"
+					},
+					{
+						"name": "ACUTE STROKE\n(# of Cases)",
+						"type": "String"
+					},
+					{
+						"name": "ACUTE STROKE (Outlier Ratings)",
+						"type": "String"
+					},
+					{
+						"name": "GI HEMORRHAGE (Risk-Adjusted Mortality Rate)",
+						"type": "String"
+					},
+					{
+						"name": "GI HEMORRHAGE\n(# of Deaths)",
+						"type": "String"
+					},
+					{
+						"name": "GI HEMORRHAGE\n(# of Cases)",
+						"type": "String"
+					},
+					{
+						"name": "GI HEMORRHAGE (Outlier Ratings)",
+						"type": "String"
+					},
+					{
+						"name": "HIP FRACTURE\n(Risk-Adjusted Mortality Rate)",
+						"type": "String"
+					},
+					{
+						"name": "HIP FRACTURE\n(# of Deaths)",
+						"type": "String"
+					},
+					{
+						"name": "HIP FRACTURE\n(# of Cases)",
+						"type": "String"
+					},
+					{
+						"name": "HIP FRACTURE (Outlier Ratings)",
+						"type": "String"
+					},
+					{
+						"name": "PNEUMONIA\n(Risk-Adjusted Mortality Rate)",
+						"type": "String"
+					},
+					{
+						"name": "PNEUMONIA\n(# of Deaths)",
+						"type": "String"
+					},
+					{
+						"name": "PNEUMONIA\n(# of Cases)",
+						"type": "String"
+					},
+					{
+						"name": "PNEUMONIA (Outlier Ratings)",
+						"type": "String"
+					},
+					{
+						"name": "PCI\n(Risk-Adjusted Mortality Rate)",
+						"type": "String"
+					},
+					{
+						"name": "PCI\n(# of Deaths)",
+						"type": "String"
+					},
+					{
+						"name": "PCI\n(# of Cases)",
+						"type": "String"
+					},
+					{
+						"name": "PCI\n(Outlier Ratings)",
+						"type": "String"
+					},
+					{
+						"name": "CAROTID ENDARTERECTOMY\n(Risk-Adjusted Mortality Rate)",
+						"type": "String"
+					},
+					{
+						"name": "CAROTID ENDARTERECTOMY\n(# of Deaths)",
+						"type": "String"
+					},
+					{
+						"name": "CAROTID ENDARTERECTOMY\n(# of Cases)",
+						"type": "String"
+					},
+					{
+						"name": "CAROTID ENDARTERECTOMY\n(Outlier Ratings)",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_src_cust')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Ls_dev_bs",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "customers.json",
+						"folderPath": "raw",
+						"container": "venkat-de"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "integer"
+						},
+						"email": {
+							"type": "string"
+						},
+						"first": {
+							"type": "string"
+						},
+						"last": {
+							"type": "string"
+						},
+						"company": {
+							"type": "string"
+						},
+						"created_at": {
+							"type": "string"
+						},
+						"country": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_src_db_customers_24')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_db_adv",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "cust_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "cust_name",
+						"type": "varchar"
+					},
+					{
+						"name": "cust_address",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "ramana",
+					"table": "customers"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_src_db_department24')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_db_adv",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "dep_no",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "dep_name",
+						"type": "varchar"
+					},
+					{
+						"name": "dep_id",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "ramana",
+					"table": "department"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_src_db_dept')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_db_adv",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "deptno",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "dname",
+						"type": "nvarchar"
+					},
+					{
+						"name": "dloc",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "srcdata",
+					"table": "dept"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_src_db_emp')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_db_adv",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "empno",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "ename",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ejob",
+						"type": "nvarchar"
+					},
+					{
+						"name": "esalary",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "deptno",
+						"type": "tinyint",
+						"precision": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "srcdata",
+					"table": "emp"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_src_fb')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Ls_dev_bs",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "facebook information.csv",
+						"folderPath": "raw",
+						"container": "venkat-de"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Date",
+						"type": "String"
+					},
+					{
+						"name": "Open",
+						"type": "String"
+					},
+					{
+						"name": "High",
+						"type": "String"
+					},
+					{
+						"name": "Low",
+						"type": "String"
+					},
+					{
+						"name": "Close",
+						"type": "String"
+					},
+					{
+						"name": "Adj Close",
+						"type": "String"
+					},
+					{
+						"name": "Volume",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_src_medical')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Ls_dev_bs",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Medical_Cost.csv",
+						"folderPath": "raw",
+						"container": "venkat-de"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "age",
+						"type": "String"
+					},
+					{
+						"name": "sex",
+						"type": "String"
+					},
+					{
+						"name": "bmi",
+						"type": "String"
+					},
+					{
+						"name": "children",
+						"type": "String"
+					},
+					{
+						"name": "smoker",
+						"type": "String"
+					},
+					{
+						"name": "region",
+						"type": "String"
+					},
+					{
+						"name": "charges",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_src_product_json')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Ls_dev_bs",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "products.json",
+						"folderPath": "raw",
+						"container": "venkat-de"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "integer"
+						},
+						"name": {
+							"type": "string"
+						},
+						"vendor_id": {
+							"type": "integer"
+						},
+						"requires_shipping": {
+							"type": "boolean"
+						},
+						"sku": {
+							"type": "string"
+						},
+						"taxable": {
+							"type": "boolean"
+						},
+						"status": {
+							"type": "string"
+						},
+						"price": {
+							"type": "integer"
+						},
+						"vendor": {
+							"type": "object",
+							"properties": {
+								"id": {
+									"type": "integer"
+								},
+								"name": {
+									"type": "string"
+								}
+							}
+						},
+						"details": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"track_id": {
+										"type": "integer"
+									},
+									"name": {
+										"type": "string"
+									},
+									"album_id": {
+										"type": "integer"
+									},
+									"media_type_id": {
+										"type": "integer"
+									},
+									"genre_id": {
+										"type": "integer"
+									},
+									"composer": {
+										"type": "string"
+									},
+									"milliseconds": {
+										"type": "integer"
+									},
+									"bytes": {
+										"type": "integer"
+									},
+									"unit_price": {
+										"type": "number"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_src_retail')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Ls_dev_bs",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "online-retail-dataset.csv",
+						"folderPath": "raw",
+						"container": "venkat-de"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "InvoiceNo",
+						"type": "String"
+					},
+					{
+						"name": "StockCode",
+						"type": "String"
+					},
+					{
+						"name": "Description",
+						"type": "String"
+					},
+					{
+						"name": "Quantity",
+						"type": "String"
+					},
+					{
+						"name": "InvoiceDate",
+						"type": "String"
+					},
+					{
+						"name": "UnitPrice",
+						"type": "String"
+					},
+					{
+						"name": "CustomerID",
+						"type": "String"
+					},
+					{
+						"name": "Country",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_tgt_cust')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Ls_dev_bs",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "staging",
+						"container": "venkat-de"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_tgt_db_dimemployee25')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_db_adv",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "cust_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "cust_name",
+						"type": "varchar"
+					},
+					{
+						"name": "dep_no",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "dep_name",
+						"type": "varchar"
+					},
+					{
+						"name": "dep_id",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "created_date",
+						"type": "date"
+					},
+					{
+						"name": "lod_date",
+						"type": "date"
+					},
+					{
+						"name": "user_name",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "dimemployee25"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_tgt_db_emp')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_db_adv",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ekey",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "empno",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "ename",
+						"type": "nvarchar"
+					},
+					{
+						"name": "job",
+						"type": "nvarchar"
+					},
+					{
+						"name": "esalary",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "deptno",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "created_date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "load_date",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "userid",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "tgtdata",
+					"table": "dimemployee"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_tgt_db_org')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_db_adv",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "banking",
+					"table": "vorg"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_tgt_fb')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_db_adv",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "facebook",
+					"table": "csv"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_tgt_medical')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_db_adv",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "banking",
+					"table": "medicai_vorg"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_tgt_organizations_18')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_db_adv",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "index_no",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "orgname",
+						"type": "nvarchar"
+					},
+					{
+						"name": "website",
+						"type": "nvarchar"
+					},
+					{
+						"name": "country",
+						"type": "nvarchar"
+					},
+					{
+						"name": "orgdesc",
+						"type": "nvarchar"
+					},
+					{
+						"name": "founded",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "industry",
+						"type": "nvarchar"
+					},
+					{
+						"name": "total_employees",
+						"type": "bigint",
+						"precision": 19
+					}
+				],
+				"typeProperties": {
+					"schema": "banking",
+					"table": "organization"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_tgt_product_json')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Ls_dev_bs",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "staging",
+						"container": "venkat-de"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"id": {
+							"type": "integer"
+						},
+						"email": {
+							"type": "string"
+						},
+						"first": {
+							"type": "string"
+						},
+						"last": {
+							"type": "string"
+						},
+						"company": {
+							"type": "string"
+						},
+						"created_at": {
+							"type": "string"
+						},
+						"country": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_tgt_retail_21')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_db_adv",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "invoiceno",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "stockcode",
+						"type": "nvarchar"
+					},
+					{
+						"name": "descriptions",
+						"type": "nvarchar"
+					},
+					{
+						"name": "quantity",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "invoicedate",
+						"type": "nvarchar"
+					},
+					{
+						"name": "unitprice",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "customerid",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "country",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "banking",
+					"table": "onlinesales"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_tgt_stagging_calfornia_health')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Ls_dev_bs",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Venkat_DS"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "staging",
+						"container": "venkat-de"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		}
+	]
+}
