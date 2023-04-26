@@ -2413,6 +2413,60 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DS_Tgt_DB_Tgtdata_DimAsiaCountry')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_db_adv",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Vijay"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Indexs",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Names",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Country",
+						"type": "nvarchar"
+					},
+					{
+						"name": "description",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Founded",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Industry",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Total_Employees",
+						"type": "float",
+						"precision": 15
+					}
+				],
+				"typeProperties": {
+					"schema": "tgtdata",
+					"table": "DimAsiacountry"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_db_adv')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DS_Tgt_Org')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
